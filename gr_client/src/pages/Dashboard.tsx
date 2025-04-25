@@ -1,3 +1,5 @@
+import EmptyReminders from "@/components/reminders/EmptyReminders";
+import ReminderItem from "@/components/reminders/ReminderItem";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { MapPin, Plus } from "lucide-react";
@@ -8,7 +10,43 @@ const mockUser = {
    email: "alex@example.com",
 };
 
-const mockReminders: any[] = [];
+const mockReminders: any[] = [
+   {
+      id: "1",
+      title: "Call Mom",
+      description: "Don't forget to check in with Mom once you reach the mall.",
+      triggerType: "enter",
+      locationName: "Central Mall",
+   },
+   {
+      id: "2",
+      title: "Buy Groceries",
+      description: "Pick up milk, eggs, and bread when leaving the supermarket.",
+      triggerType: "exit",
+      locationName: "Greenfield Supermarket",
+   },
+   {
+      id: "3",
+      title: "Gym Reminder",
+      description: "Quick workout if you're near the gym after 6 PM.",
+      triggerType: "enter",
+      locationName: "IronFit Gym",
+   },
+   {
+      id: "4",
+      title: "Send Work Email",
+      description: "Email the team once you get home.",
+      triggerType: "enter",
+      locationName: "Home",
+   },
+   {
+      id: "5",
+      title: "Check Fuel Prices",
+      description: "Compare fuel prices as you leave the highway.",
+      triggerType: "exit",
+      locationName: "Highway Exit 21",
+   },
+];
 
 const DashboardPage = () => {
    const [user, setUser] = useState<{ name: string; email: string } | null>(null);
@@ -55,29 +93,11 @@ const DashboardPage = () => {
                <h2 className="mb-4 text-xl font-semibold tracking-tight">Your Reminders</h2>
 
                {reminders.length === 0 ? (
-                  <Card className="border bg-card text-card-foreground">
-                     <CardHeader className="flex flex-row items-center gap-4">
-                        <div className="flex h-12 w-12 items-center justify-center rounded-full bg-primary/10">
-                           <MapPin className="h-6 w-6 text-primary" />
-                        </div>
-                        <div>
-                           <CardTitle>No reminders yet</CardTitle>
-                           <CardDescription>Start by creating your first location-based reminder</CardDescription>
-                        </div>
-                     </CardHeader>
-                     <CardFooter>
-                        <Button className="gap-2 cursor-pointer">
-                           <Plus className="h-4 w-4" />
-                           Create New Reminder
-                        </Button>
-                     </CardFooter>
-                  </Card>
+                  <EmptyReminders />
                ) : (
                   <div className="grid gap-4 sm:grid-cols-2">
                      {reminders.map((reminder) => (
-                        <Card key={reminder.id}>
-                           <CardContent>{/* Reminder content will go here */}</CardContent>
-                        </Card>
+                        <ReminderItem reminder={reminder} />
                      ))}
                   </div>
                )}
