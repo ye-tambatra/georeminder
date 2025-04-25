@@ -21,9 +21,9 @@ const HomePage = () => {
                   <div className="space-y-2">
                      <div className="flex items-center justify-center">
                         <MapPin className="mr-2 h-6 w-6 text-primary" />
-                        <h1 className="text-3xl font-bold tracking-tight sm:text-4xl">GeoReminder</h1>
+                        <h1 className="text-4xl font-bold tracking-tight sm:text-4xl">GeoReminder</h1>
                      </div>
-                     <p className="text-lg font-bold text-muted-foreground">Smart reminders triggered by location</p>
+                     <p className="text-xl font-medium text-muted-foreground">Smart reminders triggered by location</p>
                   </div>
 
                   <div className="space-y-4 py-4">
