@@ -4,6 +4,7 @@ import DashboardPage from "@/pages/Dashboard";
 import CreateReminder from "@/pages/CreateReminder";
 import UpdateReminder from "@/pages/UpdateReminder";
 import CreateUpdateReminderLayout from "./layouts/CreateUpdateReminder";
+import NotFound from "./pages/NotFound";
 
 function AppRoutes() {
    return (
@@ -14,6 +15,7 @@ function AppRoutes() {
             <Route path="/reminders/create" element={<CreateReminder />} />
             <Route path="/reminders/:id/edit" element={<UpdateReminder />} />
          </Route>
+         <Route path="*" element={<NotFound />} />
       </Routes>
    );
 }
