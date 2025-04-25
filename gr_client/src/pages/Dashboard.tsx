@@ -1,8 +1,8 @@
 import EmptyReminders from "@/components/reminders/EmptyReminders";
 import ReminderItem from "@/components/reminders/ReminderItem";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { MapPin, Plus } from "lucide-react";
+import { Card, CardContent } from "@/components/ui/card";
+import { Plus } from "lucide-react";
 import { useEffect, useState } from "react";
 
 const mockUser = {
