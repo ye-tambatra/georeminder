@@ -98,7 +98,7 @@ const DashboardPage = () => {
                ) : (
                   <div className="grid gap-4 sm:grid-cols-2">
                      {reminders.map((reminder) => (
-                        <ReminderItem reminder={reminder} />
+                        <ReminderItem key={reminder.id} reminder={reminder} />
                      ))}
                   </div>
                )}

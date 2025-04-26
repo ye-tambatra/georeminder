@@ -3,15 +3,18 @@ import { Card, CardFooter } from "@/components/ui/card";
 import { Github, MapPin } from "lucide-react";
 import Google from "@/components/icons/Google";
 import Map from "@/components/Map";
+import useAuthStore, { Providers } from "@/stores/auth";
 
 const HomePage = () => {
+   const login = useAuthStore((s) => s.login);
+
    return (
       <div className="flex min-h-screen items-center justify-center bg-background p-4 relative">
          <div className="absolute inset-0 z-2 w-full h-full">
             <Map zoom={13} className="w-full h-full" />
          </div>
          <div className="w-full max-w-xl z-5">
-            <Card className="w-full border-none sm:p-8">
+            <Card className="w-full border-none sm:p-8 py-10 px-7">
                <div className="flex flex-col items-center space-y-8 text-center">
                   <div className="space-y-2">
                      <div className="flex items-center justify-center">
@@ -29,11 +32,11 @@ const HomePage = () => {
                   </div>
 
                   <div className="flex w-full flex-col gap-2 sm:flex-row sm:justify-center">
-                     <Button className="gap-2 cursor-pointer">
+                     <Button className="gap-2 cursor-pointer" onClick={() => login(Providers.GOOGLE)}>
                         <Google />
                         Sign in with Google
                      </Button>
-                     <Button variant="outline" className="gap-2 cursor-pointer">
+                     <Button variant="outline" className="gap-2 cursor-pointer" onClick={() => login(Providers.GITHUB)}>
                         <Github className="h-4 w-4" />
                         Sign in with GitHub
                      </Button>

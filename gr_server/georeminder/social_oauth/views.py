@@ -3,6 +3,7 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework_simplejwt.tokens import RefreshToken, TokenError
 from decouple import config
+from django.contrib.auth import get_user_model
 
 class TokenRefreshView(APIView):
     """
@@ -20,13 +21,18 @@ class TokenRefreshView(APIView):
             # Verify the old refresh token
             old_refresh = RefreshToken(refresh_token_from_cookie)
 
-            # Blacklist the old refresh token
-            old_refresh.blacklist()
+            # Get the user from the old refresh token
+            user_id = old_refresh['user_id']
+            User = get_user_model()
+            user = User.objects.get(id=user_id)
 
             # Generate a new refresh token
-            new_refresh = RefreshToken.for_user(request.user)
+            new_refresh = RefreshToken.for_user(user)
             access_token = str(new_refresh.access_token)
             refresh_token = str(new_refresh)
+
+            # Blacklist the old refresh token
+            old_refresh.blacklist()
 
             # Store the new refresh token in the cookie
             response = Response({'message': 'Access token refreshed successfully'}, status=status.HTTP_200_OK)
@@ -38,8 +44,9 @@ class TokenRefreshView(APIView):
                 samesite=config('JWT_AUTH_COOKIE_SAMESITE', default=None),
             )
 
-            return Response({'access_token': access_token})
-        except TokenError:
+            return response
+        except TokenError as e:
+            print(f"TokenError: {e}")
             return Response({'error': 'Invalid or expired refresh token.'}, status=status.HTTP_401_UNAUTHORIZED)
         
 class LogoutView(APIView):

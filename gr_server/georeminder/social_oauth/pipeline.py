@@ -15,7 +15,7 @@ def generate_jwt_token(backend, user, response, *args, **kwargs):
     refresh_token = str(token)
 
 
-    frontend_redirect_url = f"{config("SOCIAL_AUTH_LOGIN_REDIRECT_URL")}?token={access_token}"
+    frontend_redirect_url = f"{config('SOCIAL_AUTH_LOGIN_REDIRECT_URL')}?token={access_token}"
     response = HttpResponseRedirect(frontend_redirect_url)
     
     response.set_cookie(
