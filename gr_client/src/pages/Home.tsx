@@ -1,19 +1,14 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardFooter } from "@/components/ui/card";
 import { Github, MapPin } from "lucide-react";
-import HomeBg from "@/assets/home_bg.jpeg";
 import Google from "@/components/icons/Google";
+import Map from "@/components/Map";
 
 const HomePage = () => {
    return (
       <div className="flex min-h-screen items-center justify-center bg-background p-4 relative">
          <div className="absolute inset-0 z-2 w-full h-full">
-            <img
-               src={HomeBg}
-               alt="Map Anatananarivo"
-               className="object-cover blur-[1px] w-full h-full bg-red-500"
-               aria-hidden="true"
-            />
+            <Map zoom={13} className="w-full h-full" />
          </div>
          <div className="w-full max-w-xl z-5">
             <Card className="w-full border-none sm:p-8">

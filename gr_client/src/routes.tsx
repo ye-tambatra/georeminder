@@ -5,6 +5,7 @@ import CreateReminder from "@/pages/CreateReminder";
 import UpdateReminder from "@/pages/UpdateReminder";
 import CreateUpdateReminderLayout from "./layouts/CreateUpdateReminder";
 import NotFound from "./pages/NotFound";
+import RealTimeTracking from "./pages/RealTimeTracking";
 
 function AppRoutes() {
    return (
@@ -15,6 +16,7 @@ function AppRoutes() {
             <Route path="/reminders/create" element={<CreateReminder />} />
             <Route path="/reminders/:id/edit" element={<UpdateReminder />} />
          </Route>
+         <Route path="/tracking" element={<RealTimeTracking />} />
          <Route path="*" element={<NotFound />} />
       </Routes>
    );
