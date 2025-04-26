@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import Map from "../Map";
 
 const formSchema = z.object({
    title: z.string().min(2, {
@@ -96,12 +97,17 @@ const ReminderForm = ({
             />
 
             {/* Map Placeholder */}
-            <div className="h-[300px] bg-gray-200 flex items-center justify-center">
-               <p>Select location on map (Map integration goes here)</p>
+            <div>
+               <p className="mb-2">Select location on map</p>
+               <div className="h-[300px] flex items-center justify-center">
+                  <Map />
+               </div>
             </div>
 
             {/* Submit Button */}
-            <Button type="submit">Save Reminder</Button>
+            <Button type="submit" className="cursor-pointer">
+               Save Reminder
+            </Button>
          </form>
       </Form>
    );

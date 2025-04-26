@@ -40,7 +40,7 @@ const Map: React.FC<MapProps> = ({
    className,
 }) => {
    return (
-      <div className={cn("relative", className)}>
+      <div className={cn("relative w-full h-full", className)}>
          <MapContainer
             center={center}
             zoom={zoom}
