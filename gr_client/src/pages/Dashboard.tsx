@@ -2,7 +2,6 @@ import Map from "@/components/Map";
 import EmptyReminders from "@/components/reminders/EmptyReminders";
 import ReminderItem from "@/components/reminders/ReminderItem";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
 import { Plus } from "lucide-react";
 import { useEffect, useState } from "react";
 
