@@ -7,21 +7,28 @@ import CreateUpdateReminderLayout from "./layouts/CreateUpdateReminder";
 import NotFound from "./pages/NotFound";
 import RealTimeTracking from "./pages/RealTimeTracking";
 import OAuthCallback from "./pages/callbacks/OAuthCallback";
-import AuthGuardLayout from "./layouts/AuthGuard";
+import ProtectedRouteLayout from "./layouts/ProtectedRoute";
+import AuthenticatedUserLayout from "./layouts/AuthenticatedUser";
 
 const AppRoutes = () => {
    return (
       <Routes>
-         <Route path="/" element={<HomePage />} />
-         <Route element={<AuthGuardLayout />}>
-            <Route path="/dashboard" element={<DashboardPage />} />
-            <Route element={<CreateUpdateReminderLayout />}>
-               <Route path="/reminders/create" element={<CreateReminder />} />
-               <Route path="/reminders/:id/edit" element={<UpdateReminder />} />
-            </Route>
-            <Route path="/tracking" element={<RealTimeTracking />} />
+         <Route element={<ProtectedRouteLayout allowAuthenticatedUser={false} />}>
+            <Route path="/" element={<HomePage />} />
+            <Route path="/oauth/callback" element={<OAuthCallback />} />
          </Route>
-         <Route path="/oauth/callback" element={<OAuthCallback />} />
+
+         <Route element={<ProtectedRouteLayout />}>
+            <Route element={<AuthenticatedUserLayout />}>
+               <Route path="/dashboard" element={<DashboardPage />} />
+               <Route element={<CreateUpdateReminderLayout />}>
+                  <Route path="/reminders/create" element={<CreateReminder />} />
+                  <Route path="/reminders/:id/edit" element={<UpdateReminder />} />
+               </Route>
+               <Route path="/tracking" element={<RealTimeTracking />} />
+            </Route>
+         </Route>
+
          <Route path="*" element={<NotFound />} />
       </Routes>
    );

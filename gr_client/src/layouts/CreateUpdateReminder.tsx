@@ -3,7 +3,7 @@ import { Link, Outlet } from "react-router";
 
 const CreateUpdateReminderLayout = () => {
    return (
-      <div className="max-w-2xl mx-auto px-6 py-10 my-10">
+      <div className="max-w-2xl mx-auto px-6  my-10">
          <div className="mt-5 mb-10">
             <Link
                to="/dashboard"

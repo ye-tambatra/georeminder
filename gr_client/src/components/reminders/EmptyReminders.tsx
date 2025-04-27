@@ -1,6 +1,7 @@
 import { Card, CardHeader, CardFooter, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { MapPin, Plus } from "lucide-react";
+import { Link } from "react-router";
 
 const EmptyReminders = () => {
    return (
@@ -15,10 +16,12 @@ const EmptyReminders = () => {
             </div>
          </CardHeader>
          <CardFooter>
-            <Button className="gap-2 cursor-pointer">
-               <Plus className="h-4 w-4" />
-               Create New Reminder
-            </Button>
+            <Link to={"/reminders/create"}>
+               <Button className="gap-2 cursor-pointer" type="button">
+                  <Plus className="h-4 w-4" />
+                  Create New Reminder
+               </Button>
+            </Link>
          </CardFooter>
       </Card>
    );

@@ -4,6 +4,7 @@ import ReminderItem from "@/components/reminders/ReminderItem";
 import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
 import { useEffect, useState } from "react";
+import { Link } from "react-router";
 
 const mockUser = {
    name: "Alex Johnson",
@@ -39,13 +40,6 @@ const mockReminders: any[] = [
       triggerType: "enter",
       locationName: "Home",
    },
-   {
-      id: "5",
-      title: "Check Fuel Prices",
-      description: "Compare fuel prices as you leave the highway.",
-      triggerType: "exit",
-      locationName: "Highway Exit 21",
-   },
 ];
 
 const DashboardPage = () => {
@@ -75,17 +69,19 @@ const DashboardPage = () => {
 
    return (
       <div className="container px-4 lg:mx-auto max-w-4xl py-10">
-         <div className="space-y-6 py-10">
+         <div className="space-y-6 py-4">
             {/* Header with greeting */}
             <header className="flex flex-col md:flex-row  items-center justify-between">
                <div className="text-center md:text-left">
                   <h1 className="text-2xl font-bold tracking-tight">Hello, {user?.name || user?.email || "there"}</h1>
                   <p className="text-muted-foreground">Welcome to your GeoReminder dashboard</p>
                </div>
-               <Button className="gap-2 cursor-pointer w-full md:w-auto my-5">
-                  <Plus className="h-4 w-4" />
-                  Create New Reminder
-               </Button>
+               <Link to={"/reminders/create"}>
+                  <Button className="gap-2 cursor-pointer w-full md:w-auto my-5" type="button">
+                     <Plus className="h-4 w-4" />
+                     Create New Reminder
+                  </Button>
+               </Link>
             </header>
 
             {/* Reminders section */}
