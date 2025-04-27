@@ -5,6 +5,10 @@ export const Providers = {
    GOOGLE: "google",
    GITHUB: "github",
 } as const;
+const PROVIDERS_PATH_MAP = {
+   [Providers.GOOGLE]: `${import.meta.env.VITE_API_URL}/social/login/google-oauth2/`,
+   [Providers.GITHUB]: `${import.meta.env.VITE_API_URL}/social/login/github/`,
+};
 
 export type Provider = (typeof Providers)[keyof typeof Providers];
 
@@ -30,11 +34,7 @@ const useAuthStore = create<AuthStore>((set) => ({
    accessToken: null,
    isAuthenticated: false,
    login: (provider: Provider) => {
-      if (provider === Providers.GOOGLE) {
-         window.location.href = `${import.meta.env.VITE_API_URL}/social/login/google-oauth2/`;
-      } else if (provider === Providers.GITHUB) {
-         window.location.href = `${import.meta.env.VITE_API_URL}/social/login/github/`;
-      }
+      window.location.href = PROVIDERS_PATH_MAP[provider];
    },
    logout: async () => {
       try {

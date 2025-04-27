@@ -129,6 +129,7 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTHENTICATION_BACKENDS = (
+    'social_core.backends.github.GithubOAuth2', # Github OAuth2
     'social_core.backends.google.GoogleOAuth2',  # Google OAuth2
     'django.contrib.auth.backends.ModelBackend', # Default
 )
@@ -138,6 +139,10 @@ from decouple import config
 # Google OAuth Credentials
 SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = config('GOOGLE_OAUTH2_KEY')
 SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = config('GOOGLE_OAUTH2_SECRET')
+
+# Github OAuth Credentials
+SOCIAL_AUTH_GITHUB_KEY = config('GITHUB_OAUTH2_KEY')
+SOCIAL_AUTH_GITHUB_SECRET = config('GITHUB_OAUTH2_SECRET')
 
 # Redirect URL to frontend
 SOCIAL_AUTH_LOGIN_REDIRECT_URL = config('SOCIAL_AUTH_LOGIN_REDIRECT_URL', default='http://localhost:3000/oauth/callback')
