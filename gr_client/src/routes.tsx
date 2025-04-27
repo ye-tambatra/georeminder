@@ -6,10 +6,10 @@ import UpdateReminder from "@/pages/UpdateReminder";
 import CreateUpdateReminderLayout from "./layouts/CreateUpdateReminder";
 import NotFound from "./pages/NotFound";
 import RealTimeTracking from "./pages/RealTimeTracking";
-import AuthCallback from "./pages/callbacks/AuthCallback";
+import OAuthCallback from "./pages/callbacks/OAuthCallback";
 import AuthGuardLayout from "./layouts/AuthGuard";
 
-function AppRoutes() {
+const AppRoutes = () => {
    return (
       <Routes>
          <Route path="/" element={<HomePage />} />
@@ -21,10 +21,10 @@ function AppRoutes() {
             </Route>
             <Route path="/tracking" element={<RealTimeTracking />} />
          </Route>
-         <Route path="/oauth/callback" element={<AuthCallback />} />
+         <Route path="/oauth/callback" element={<OAuthCallback />} />
          <Route path="*" element={<NotFound />} />
       </Routes>
    );
-}
+};
 
 export default AppRoutes;
