@@ -1,61 +1,69 @@
 import { create } from "zustand";
-import axios from "@/lib/axios";
+import { logout, refreshToken } from "@/services/auth";
 
-export const Providers = {
+export const AuthProviders = {
    GOOGLE: "google",
    GITHUB: "github",
 } as const;
-const PROVIDERS_PATH_MAP = {
-   [Providers.GOOGLE]: `${import.meta.env.VITE_API_URL}/social/login/google-oauth2/`,
-   [Providers.GITHUB]: `${import.meta.env.VITE_API_URL}/social/login/github/`,
+
+const PROVIDER_URLS = {
+   [AuthProviders.GOOGLE]: `${import.meta.env.VITE_API_URL}/social/login/google-oauth2/`,
+   [AuthProviders.GITHUB]: `${import.meta.env.VITE_API_URL}/social/login/github/`,
 };
 
-export type Provider = (typeof Providers)[keyof typeof Providers];
+export type AuthProvider = (typeof AuthProviders)[keyof typeof AuthProviders];
 
 export interface User {
-   id: string;
+   id: number;
    email: string;
-   name: string;
+   firstName: string;
+   lastName: string;
 }
 
-interface AuthStore {
+interface AuthState {
    user: User | null;
    isAuthenticated: boolean;
-   login: (provider: Provider) => void;
+   login: (provider: AuthProvider) => void;
    logout: () => Promise<void>;
    accessToken: string | null;
-   setAccessToken: (token: string) => void;
-   refreshAccessToken: () => Promise<string | null>;
-   _loginWithAccessToken: (token: string) => Promise<void>;
+   setToken: (token: string) => void;
+   refreshToken: () => Promise<string | null>;
+   updateState: (data: { user?: User | null; isAuthenticated?: boolean; accessToken?: string }) => void;
 }
 
-const useAuthStore = create<AuthStore>((set) => ({
+const useAuthStore = create<AuthState>((set) => ({
    user: null,
    accessToken: null,
    isAuthenticated: false,
-   login: (provider: Provider) => {
-      window.location.href = PROVIDERS_PATH_MAP[provider];
+   login: (provider: AuthProvider) => {
+      window.location.href = PROVIDER_URLS[provider];
    },
    logout: async () => {
       try {
-         await axios.post("social/logout/");
+         await logout();
       } finally {
          set({ user: null, isAuthenticated: false });
       }
    },
-   setAccessToken: (token: string) => set({ accessToken: token }),
-   refreshAccessToken: async () => {
+   setToken: (token: string) => set({ accessToken: token }),
+   refreshToken: async () => {
       try {
-         const response = await axios.post<{ access_token: string }>("social/token/refresh/");
-         set({ accessToken: response.data.access_token, isAuthenticated: true, user: null });
-         return response.data.access_token;
+         const { accessToken, user } = await refreshToken();
+         set({
+            accessToken,
+            isAuthenticated: true,
+            user: { ...user },
+         });
+         return accessToken;
       } catch {
          set({ user: null, isAuthenticated: false });
          return null;
       }
    },
-   _loginWithAccessToken: async (token: string) => {
-      set({ user: null, isAuthenticated: true, accessToken: token });
+   updateState(data) {
+      set({
+         ...data,
+      });
    },
 }));
 

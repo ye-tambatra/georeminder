@@ -7,11 +7,11 @@ type Props = {
 
 const AppInitializer = ({ children }: Props) => {
    const [isReady, setIsReady] = useState(false);
-   const refreshAccessToken = useAuthStore((s) => s.refreshAccessToken);
+   const refreshToken = useAuthStore((s) => s.refreshToken);
 
    useEffect(() => {
       async function initializeApp() {
-         await refreshAccessToken();
+         await refreshToken();
          setIsReady(true);
       }
       initializeApp();

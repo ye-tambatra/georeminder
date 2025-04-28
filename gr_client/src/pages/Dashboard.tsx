@@ -2,14 +2,10 @@ import Map from "@/components/Map";
 import EmptyReminders from "@/components/reminders/EmptyReminders";
 import ReminderItem from "@/components/reminders/ReminderItem";
 import { Button } from "@/components/ui/button";
+import useAuthStore from "@/stores/auth";
 import { Plus } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Link } from "react-router";
-
-const mockUser = {
-   name: "Alex Johnson",
-   email: "alex@example.com",
-};
 
 const mockReminders: any[] = [
    {
@@ -43,17 +39,13 @@ const mockReminders: any[] = [
 ];
 
 const DashboardPage = () => {
-   const [user, setUser] = useState<{ name: string; email: string } | null>(null);
    const [reminders, setReminders] = useState<any[]>([]);
    const [isLoading, setIsLoading] = useState(true);
+   const user = useAuthStore((s) => s.user);
 
-   useEffect(() => {
-      setTimeout(() => {
-         setUser(mockUser);
-         setReminders(mockReminders);
-         setIsLoading(false);
-      }, 3000);
-   }, []);
+   console.log({
+      user,
+   });
 
    if (isLoading) {
       return (

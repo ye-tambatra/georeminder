@@ -4,6 +4,7 @@ from rest_framework import status
 from rest_framework_simplejwt.tokens import RefreshToken, TokenError
 from decouple import config
 from django.contrib.auth import get_user_model
+from rest_framework.permissions import IsAuthenticated
 
 class TokenRefreshView(APIView):
     """
@@ -35,7 +36,16 @@ class TokenRefreshView(APIView):
             old_refresh.blacklist()
 
             # Store the new refresh token in the cookie
-            response = Response({'message': 'Access token refreshed successfully'}, status=status.HTTP_200_OK)
+            response = Response({
+                'message': 'Access token refreshed successfully',
+                'access_token': access_token,
+                'user': {
+                    'id': user.id,
+                    'email': user.email,
+                    'first_name': user.first_name,
+                    'last_name': user.last_name,
+                }
+            }, status=status.HTTP_200_OK)
             response.set_cookie(
                 key=config('JWT_AUTH_COOKIE_NAME', default="refresh_token"),
                 value=str(refresh_token),
@@ -67,3 +77,21 @@ class LogoutView(APIView):
         response = Response({"message": "Logged out successfully"}, status=status.HTTP_200_OK)
         response.delete_cookie(config('JWT_AUTH_COOKIE_NAME', default="refresh_token"))
         return response
+
+
+class MeView(APIView):
+    """
+    Get the authenticated user's information.
+    """
+
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        user = request.user
+        user_info = {
+            'id': user.id,
+            'email': user.email,
+            'first_name': user.first_name,
+            'last_name': user.last_name,
+        }
+        return Response(user_info, status=status.HTTP_200_OK)
