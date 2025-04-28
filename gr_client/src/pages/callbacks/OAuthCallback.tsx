@@ -1,33 +1,37 @@
-import { fetchUserWithToken } from "@/services/users";
-import useAuthStore from "@/stores/auth";
+import { githubLogin, googleLogin } from "@/services/oauth";
 import { useEffect } from "react";
-import { useSearchParams, useNavigate } from "react-router";
+import { useSearchParams } from "react-router";
 
 const OAuthCallback = () => {
-   const navigate = useNavigate();
    const [searchParams] = useSearchParams();
-   const accessToken = searchParams.get("token");
-   const updateState = useAuthStore((s) => s.updateState);
+   const state = searchParams.get("state");
+   const code = searchParams.get("code");
 
    useEffect(() => {
-      const authenticateUser = async () => {
-         if (accessToken) {
-            try {
-               const user = await fetchUserWithToken(accessToken);
-               updateState({
-                  accessToken: accessToken,
-                  isAuthenticated: true,
-                  user: user,
-               });
-               navigate("/dashboard");
-            } catch {
-               navigate("/");
-            }
+      const requestTokens = async () => {
+         if (!code || !state) {
+            return;
+         }
+
+         if (state === "github") {
+            const data = await githubLogin(code);
+            console.log({
+               data,
+            });
+            return;
+         }
+
+         if (state === "google") {
+            const data = await googleLogin(code);
+            console.log({
+               data,
+            });
+            return;
          }
       };
 
-      authenticateUser();
-   }, [searchParams, updateState, navigate]);
+      requestTokens();
+   }, [searchParams]);
 
    return <div>Authenticating...</div>;
 };

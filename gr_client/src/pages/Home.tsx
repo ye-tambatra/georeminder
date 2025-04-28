@@ -3,11 +3,9 @@ import { Card, CardFooter } from "@/components/ui/card";
 import { Github, MapPin } from "lucide-react";
 import Google from "@/components/icons/Google";
 import Map from "@/components/Map";
-import useAuthStore, { AuthProviders } from "@/stores/auth";
+import { redirectToGithubOAuth, redirectToGoogleOAuth } from "@/services/oauth";
 
 const HomePage = () => {
-   const login = useAuthStore((s) => s.login);
-
    return (
       <div className="flex min-h-screen items-center justify-center bg-background p-4 relative">
          <div className="absolute inset-0 z-2 w-full h-full">
@@ -32,14 +30,11 @@ const HomePage = () => {
                   </div>
 
                   <div className="flex w-full flex-col gap-2 sm:flex-row sm:justify-center">
-                     <Button className="gap-2 cursor-pointer" onClick={() => login(AuthProviders.GOOGLE)}>
+                     <Button className="gap-2 cursor-pointer" onClick={redirectToGoogleOAuth}>
                         <Google />
                         Sign in with Google
                      </Button>
-                     <Button
-                        variant="outline"
-                        className="gap-2 cursor-pointer"
-                        onClick={() => login(AuthProviders.GITHUB)}>
+                     <Button variant="outline" className="gap-2 cursor-pointer" onClick={redirectToGithubOAuth}>
                         <Github className="h-4 w-4" />
                         Sign in with GitHub
                      </Button>
