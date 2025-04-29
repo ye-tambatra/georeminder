@@ -12,3 +12,4 @@ class Reminder(models.Model):
     location_lat = models.FloatField()
     location_lng = models.FloatField()
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='reminders')
+    location_name = models.CharField(max_length=255, blank=True, null=True)
