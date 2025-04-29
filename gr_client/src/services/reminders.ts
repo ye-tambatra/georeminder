@@ -30,7 +30,7 @@ export const getReminderById = async (id: number): Promise<Reminder> => {
    return snakeToCamel(response.data);
 };
 
-export const updateReminder = async (id: number, reminder: Reminder): Promise<Reminder> => {
+export const updateReminder = async (id: number, reminder: Partial<Reminder>): Promise<Reminder> => {
    const response = await api.put<Reminder>(`api/users/reminders/${id}/`, camelToSnake(reminder));
    return snakeToCamel(response.data);
 };
