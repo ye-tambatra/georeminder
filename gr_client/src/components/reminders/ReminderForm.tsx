@@ -54,6 +54,13 @@ const ReminderForm = ({
       return [];
    }, [initialValues]);
 
+   const getMapCenterValues = () => {
+      if (initialValues) {
+         return [form.getValues("locationLat"), form.getValues("locationLng")] as [number, number];
+      }
+      return undefined;
+   };
+
    const [markers, setMarkers] = useState<MarkerProps[]>(getMarkersIntialValue());
 
    return (
@@ -117,7 +124,7 @@ const ReminderForm = ({
                <p className="mb-2">Select location on map</p>
                <div className="h-[300px] flex items-center justify-center">
                   <Map
-                     center={[form.getValues("locationLat"), form.getValues("locationLng")]}
+                     center={getMapCenterValues()}
                      markers={markers}
                      onClick={({ lat, lng }) => {
                         form.setValue("locationLat", lat);
