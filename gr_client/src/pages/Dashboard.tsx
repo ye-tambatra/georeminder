@@ -2,48 +2,17 @@ import Map from "@/components/Map";
 import EmptyReminders from "@/components/reminders/EmptyReminders";
 import ReminderItem from "@/components/reminders/ReminderItem";
 import { Button } from "@/components/ui/button";
+import { getReminders } from "@/services/reminders";
 import useAuthStore from "@/stores/auth";
 import { Plus } from "lucide-react";
-import { useState } from "react";
 import { Link } from "react-router";
-
-const mockReminders: any[] = [
-   {
-      id: "1",
-      title: "Call Mom",
-      description: "Don't forget to check in with Mom once you reach the mall.",
-      triggerType: "enter",
-      locationName: "Central Mall",
-   },
-   {
-      id: "2",
-      title: "Buy Groceries",
-      description: "Pick up milk, eggs, and bread when leaving the supermarket.",
-      triggerType: "exit",
-      locationName: "Greenfield Supermarket",
-   },
-   {
-      id: "3",
-      title: "Gym Reminder",
-      description: "Quick workout if you're near the gym after 6 PM.",
-      triggerType: "enter",
-      locationName: "IronFit Gym",
-   },
-   {
-      id: "4",
-      title: "Send Work Email",
-      description: "Email the team once you get home.",
-      triggerType: "enter",
-      locationName: "Home",
-   },
-];
+import useSWR from "swr";
 
 const DashboardPage = () => {
-   const [reminders, setReminders] = useState<any[]>([]);
-   const [isLoading, setIsLoading] = useState(false);
    const user = useAuthStore((s) => s.user);
+   const { data: reminders, isLoading } = useSWR("api/users/reminders", getReminders);
 
-   if (isLoading) {
+   if (isLoading || !reminders) {
       return (
          <div className="container mx-auto max-w-4xl px-4 py-10">
             <div className="space-y-6 py-10">

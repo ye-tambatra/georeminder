@@ -6,6 +6,9 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import Map from "../Map";
+import { Loader } from "lucide-react";
+import { useState } from "react";
+import { MarkerProps } from "@/components/Map";
 
 const formSchema = z.object({
    title: z.string().min(2, {
@@ -15,19 +18,20 @@ const formSchema = z.object({
    triggerType: z.enum(["enter", "exit"], {
       message: "Select whether to trigger on enter or exit.",
    }),
-   // Coordinates for the location; in the future, this will be handled by the map pin
-   locationLat: z.number().optional(),
-   locationLng: z.number().optional(),
+   locationLat: z.number(),
+   locationLng: z.number(),
 });
 
-type ReminderFormValues = z.infer<typeof formSchema>;
+export type ReminderFormValues = z.infer<typeof formSchema>;
 
 const ReminderForm = ({
    initialValues,
    onSubmit,
+   submitButtonLoading = false,
 }: {
    initialValues?: ReminderFormValues;
    onSubmit: (values: ReminderFormValues) => void;
+   submitButtonLoading?: boolean;
 }) => {
    const form = useForm<ReminderFormValues>({
       resolver: zodResolver(formSchema),
@@ -39,6 +43,7 @@ const ReminderForm = ({
          locationLng: undefined,
       },
    });
+   const [markers, setMarkers] = useState<MarkerProps[]>([]);
 
    return (
       <Form {...form}>
@@ -100,13 +105,36 @@ const ReminderForm = ({
             <div>
                <p className="mb-2">Select location on map</p>
                <div className="h-[300px] flex items-center justify-center">
-                  <Map />
+                  <Map
+                     markers={markers}
+                     onClick={({ lat, lng }) => {
+                        form.setValue("locationLat", lat);
+                        form.setValue("locationLng", lng);
+                        form.trigger(["locationLat", "locationLng"]); // Re-run validation after setting the values
+
+                        setMarkers([
+                           {
+                              position: [lat, lng],
+                           },
+                        ]);
+                     }}
+                  />
                </div>
+               {form.formState.errors.locationLat || form.formState.errors.locationLng ? (
+                  <p className="text-destructive mt-2">Please select a position on the map.</p>
+               ) : null}
             </div>
 
             {/* Submit Button */}
-            <Button type="submit" className="cursor-pointer">
-               Save Reminder
+            <Button type="submit" disabled={submitButtonLoading} className="cursor-pointer">
+               {submitButtonLoading ? (
+                  <>
+                     <Loader />
+                     Saving...
+                  </>
+               ) : (
+                  <>Save Reminder</>
+               )}
             </Button>
          </form>
       </Form>

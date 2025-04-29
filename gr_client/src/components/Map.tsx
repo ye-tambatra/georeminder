@@ -1,10 +1,10 @@
 import React from "react";
-import { MapContainer, TileLayer, Marker, Popup, Circle } from "react-leaflet";
+import { MapContainer, TileLayer, Marker as ReactLeafletMarker, Popup, Circle, useMapEvents } from "react-leaflet";
 import L from "leaflet";
 import { cn } from "@/lib/utils";
 import "leaflet/dist/leaflet.css";
 
-interface MarkerProps {
+export interface MarkerProps {
    position: [number, number];
    popupText?: string;
    iconUrl?: string;
@@ -17,11 +17,12 @@ interface CircleProps {
 }
 
 interface MapProps {
-   center?: [number, number]; // Made center optional
+   center?: [number, number];
    zoom?: number;
    markers?: MarkerProps[];
    circles?: CircleProps[];
    className?: string;
+   onClick?: (coord: { lat: number; lng: number }) => void;
 }
 
 const DEFAULT_CENTER: [number, number] = [-18.8792, 47.5079]; // Antananarivo, Madagascar coordinates
@@ -38,6 +39,7 @@ const Map: React.FC<MapProps> = ({
    markers = [],
    circles = [],
    className,
+   onClick,
 }) => {
    return (
       <div className={cn("relative w-full h-full", className)}>
@@ -54,14 +56,7 @@ const Map: React.FC<MapProps> = ({
                subdomains={["mt1", "mt2", "mt3"]}
                attribution="Google"
             />
-            {markers.map((marker, index) => (
-               <Marker
-                  key={index}
-                  position={marker.position}
-                  icon={marker.iconUrl ? new L.Icon({ iconUrl: marker.iconUrl }) : undefined}>
-                  {marker.popupText && <Popup>{marker.popupText}</Popup>}
-               </Marker>
-            ))}
+            <Markers markers={markers} onClick={onClick} />
             {circles.map((circle, index) => (
                <Circle key={index} center={circle.center} radius={circle.radius}>
                   {circle.popupText && <Popup>{circle.popupText}</Popup>}
@@ -70,6 +65,25 @@ const Map: React.FC<MapProps> = ({
          </MapContainer>
       </div>
    );
+};
+
+const Markers = (props: { markers: MarkerProps[]; onClick?: (coord: { lat: number; lng: number }) => void }) => {
+   const map = useMapEvents({
+      click: (e) => {
+         if (props.onClick) {
+            props.onClick({
+               lat: e.latlng.lat,
+               lng: e.latlng.lng,
+            });
+         }
+      },
+   });
+
+   return props.markers.map((marker, index) => (
+      <ReactLeafletMarker key={index} position={marker.position}>
+         {marker.popupText && <Popup>{marker.popupText}</Popup>}
+      </ReactLeafletMarker>
+   ));
 };
 
 export default Map;

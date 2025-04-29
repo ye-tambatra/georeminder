@@ -13,3 +13,12 @@ export const snakeToCamel = (obj: any) => {
    }
    return newObj;
 };
+
+export const camelToSnake = (obj: any) => {
+   const newObj: any = {};
+   for (const key in obj) {
+      const snakeKey = key.replace(/([A-Z])/g, (m) => `_${m.toLowerCase()}`);
+      newObj[snakeKey] = obj[key];
+   }
+   return newObj;
+};

@@ -1,5 +1,5 @@
 import api from "@/lib/axios";
-import { snakeToCamel } from "@/lib/utils";
+import { camelToSnake, snakeToCamel } from "@/lib/utils";
 
 export enum TriggerType {
    EXIT = "exit",
@@ -16,7 +16,7 @@ export interface Reminder {
 }
 
 export const createReminder = async (reminder: Reminder): Promise<Reminder> => {
-   const response = await api.post<Reminder>("api/users/reminders/", reminder);
+   const response = await api.post<Reminder>("api/users/reminders/", camelToSnake(reminder));
    return snakeToCamel(response.data);
 };
 
@@ -31,7 +31,7 @@ export const getReminderById = async (id: number): Promise<Reminder> => {
 };
 
 export const updateReminder = async (id: number, reminder: Reminder): Promise<Reminder> => {
-   const response = await api.put<Reminder>(`api/users/reminders/${id}/`, reminder);
+   const response = await api.put<Reminder>(`api/users/reminders/${id}/`, camelToSnake(reminder));
    return snakeToCamel(response.data);
 };
 
