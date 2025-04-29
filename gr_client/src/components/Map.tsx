@@ -1,5 +1,13 @@
-import React from "react";
-import { MapContainer, TileLayer, Marker as ReactLeafletMarker, Popup, Circle, useMapEvents } from "react-leaflet";
+import React, { useEffect } from "react";
+import {
+   MapContainer,
+   TileLayer,
+   Marker as ReactLeafletMarker,
+   Popup,
+   Circle,
+   useMapEvents,
+   useMap,
+} from "react-leaflet";
 import L from "leaflet";
 import { cn } from "@/lib/utils";
 import "leaflet/dist/leaflet.css";
@@ -56,6 +64,7 @@ const Map: React.FC<MapProps> = ({
                subdomains={["mt1", "mt2", "mt3"]}
                attribution="Google"
             />
+            <UpdateMapView center={center} zoom={zoom} />
             <Markers markers={markers} onClick={onClick} />
             {circles.map((circle, index) => (
                <Circle key={index} center={circle.center} radius={circle.radius}>
@@ -84,6 +93,17 @@ const Markers = (props: { markers: MarkerProps[]; onClick?: (coord: { lat: numbe
          {marker.popupText && <Popup>{marker.popupText}</Popup>}
       </ReactLeafletMarker>
    ));
+};
+
+const UpdateMapView = ({ center, zoom }: { center: [number, number]; zoom: number }) => {
+   const map = useMap();
+   useEffect(() => {
+      if (center) {
+         map.setView(center, zoom);
+      }
+   }, [center, map, zoom]);
+
+   return null;
 };
 
 export default Map;

@@ -9,6 +9,7 @@ import RealTimeTracking from "./pages/RealTimeTracking";
 import OAuthCallback from "./pages/callbacks/OAuthCallback";
 import ProtectedRouteLayout from "./layouts/ProtectedRoute";
 import AuthenticatedUserLayout from "./layouts/AuthenticatedUser";
+import ReminderDetails from "./pages/ReminderDetails";
 
 const AppRoutes = () => {
    return (
@@ -23,6 +24,7 @@ const AppRoutes = () => {
                <Route path="/dashboard" element={<DashboardPage />} />
                <Route element={<CreateUpdateReminderLayout />}>
                   <Route path="/reminders/create" element={<CreateReminder />} />
+                  <Route path="/reminders/:id" element={<ReminderDetails />} />
                   <Route path="/reminders/:id/edit" element={<UpdateReminder />} />
                </Route>
                <Route path="/tracking" element={<RealTimeTracking />} />

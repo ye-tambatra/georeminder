@@ -1,5 +1,6 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { Link } from "react-router";
 
 const ReminderItem = ({ reminder }: { reminder: any }) => {
    return (
@@ -21,9 +22,11 @@ const ReminderItem = ({ reminder }: { reminder: any }) => {
             )}
 
             <div className="pt-2">
-               <Button variant="outline" size="sm" className="w-full cursor-pointer">
-                  View Details
-               </Button>
+               <Link to={`/reminders/${reminder.id}`}>
+                  <Button variant="outline" size="sm" className="w-full cursor-pointer" type="button">
+                     View Details
+                  </Button>
+               </Link>
             </div>
          </CardContent>
       </Card>
