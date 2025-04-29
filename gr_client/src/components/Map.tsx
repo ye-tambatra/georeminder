@@ -42,7 +42,7 @@ const Map: React.FC<MapProps> = ({
    onClick,
 }) => {
    return (
-      <div className={cn("relative w-full h-full", className)}>
+      <div className={cn("relative w-full h-full z-5", className)}>
          <MapContainer
             center={center}
             zoom={zoom}
