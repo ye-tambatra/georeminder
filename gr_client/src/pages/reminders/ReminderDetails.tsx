@@ -1,9 +1,10 @@
 import Map, { MarkerProps } from "@/components/Map";
+import DeleteReminderDialog from "@/components/modals/DeleteReminderDialog";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { getReminderById } from "@/services/reminders";
+import { deleteReminder, getReminderById } from "@/services/reminders";
 import { useEffect, useState } from "react";
-import { Link, useParams } from "react-router";
+import { Link, useNavigate, useParams } from "react-router";
 import useSWR from "swr";
 
 const fetcher = ([_, id]: [string, number]) => {
@@ -15,6 +16,15 @@ const ReminderDetails = () => {
    const { data: reminder, isLoading } = useSWR(["api/users/reminders", id], fetcher);
    const [markers, setMarkers] = useState<MarkerProps[]>([]);
    const [center, setCenter] = useState<[number, number] | undefined>();
+   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
+   const navigate = useNavigate();
+
+   const handleDelete = async () => {
+      if (id) {
+         await deleteReminder(Number(id));
+         navigate("/dashboard");
+      }
+   };
 
    useEffect(() => {
       if (reminder) {
@@ -48,12 +58,19 @@ const ReminderDetails = () => {
                   <Link to={`/reminders/${reminder.id}/edit`}>
                      <Button className="px-5 cursor-pointer">Edit</Button>
                   </Link>
-                  <Button variant={"outline"} className="cursor-pointer">
+                  <Button variant="outline" className="cursor-pointer" onClick={() => setIsDeleteDialogOpen(true)}>
                      Delete
                   </Button>
                </div>
             </CardFooter>
          </Card>
+
+         <DeleteReminderDialog
+            isOpen={isDeleteDialogOpen}
+            onOpenChange={setIsDeleteDialogOpen}
+            onConfirm={handleDelete}
+            reminderTitle={reminder.title}
+         />
       </>
    );
 };
