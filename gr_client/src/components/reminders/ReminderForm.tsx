@@ -7,7 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import Map from "../Map";
 import { Loader } from "lucide-react";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { MarkerProps } from "@/components/Map";
 
 const formSchema = z.object({
@@ -43,7 +43,18 @@ const ReminderForm = ({
          locationLng: undefined,
       },
    });
-   const [markers, setMarkers] = useState<MarkerProps[]>([]);
+   const getMarkersIntialValue = useCallback((): MarkerProps[] => {
+      if (initialValues) {
+         return [
+            {
+               position: [initialValues.locationLat, initialValues.locationLng],
+            },
+         ];
+      }
+      return [];
+   }, [initialValues]);
+
+   const [markers, setMarkers] = useState<MarkerProps[]>(getMarkersIntialValue());
 
    return (
       <Form {...form}>
@@ -106,6 +117,7 @@ const ReminderForm = ({
                <p className="mb-2">Select location on map</p>
                <div className="h-[300px] flex items-center justify-center">
                   <Map
+                     center={[form.getValues("locationLat"), form.getValues("locationLng")]}
                      markers={markers}
                      onClick={({ lat, lng }) => {
                         form.setValue("locationLat", lat);

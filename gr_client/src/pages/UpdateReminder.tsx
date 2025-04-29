@@ -1,30 +1,39 @@
 import { useEffect, useState } from "react";
 import ReminderForm from "@/components/reminders/ReminderForm";
-import { Link } from "react-router";
-import { ArrowLeft } from "lucide-react";
+import { useParams } from "react-router";
+import { getReminderById } from "@/services/reminders";
+import useSWR from "swr";
+import { MarkerProps } from "@/components/Map";
+import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
+
+// Create a fetcher function for SWR
+const fetcher = ([_, id]: [string, string]) => getReminderById(Number(id));
 
 const UpdateReminder = () => {
-   const [reminder, setReminder] = useState<any | null>(null);
-
-   useEffect(() => {
-      // Simulate fetching reminder data (e.g., from API)
-      const fetchedReminder = {
-         id: "1",
-         title: "Call Mom",
-         description: "Call her when you get to the mall.",
-         triggerType: "enter",
-         locationLat: 40.7128,
-         locationLng: -74.006,
-      };
-      setReminder(fetchedReminder);
-   }, []);
+   const { id } = useParams<{ id: string }>();
+   const { data: reminder, isLoading, error } = useSWR(id ? ["api/users/reminders", id] : null, fetcher);
 
    const handleUpdateReminder = (values: any) => {
       // Handle update logic here (e.g., make an API call)
       console.log("Updating reminder:", values);
    };
 
-   if (!reminder) return <p>Loading...</p>;
+   if (isLoading || !reminder) {
+      return (
+         <Card>
+            <CardHeader>
+               <CardTitle>Loading...</CardTitle>
+            </CardHeader>
+            <CardContent>
+               <div className="h-[300px] flex items-center justify-center">Loading reminder details...</div>
+            </CardContent>
+         </Card>
+      );
+   }
+
+   if (error) {
+      return <div>Error loading reminder: {error.message}</div>;
+   }
 
    return (
       <>
