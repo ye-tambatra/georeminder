@@ -54,12 +54,12 @@ const ReminderForm = ({
       return [];
    }, [initialValues]);
 
-   const getMapCenterValues = () => {
+   const getMapCenterValues = useCallback(() => {
       if (initialValues) {
          return [form.getValues("locationLat"), form.getValues("locationLng")] as [number, number];
       }
       return undefined;
-   };
+   }, [initialValues]);
 
    const [markers, setMarkers] = useState<MarkerProps[]>(getMarkersIntialValue());
 
