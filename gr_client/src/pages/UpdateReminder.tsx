@@ -1,9 +1,7 @@
-import { useEffect, useState } from "react";
 import ReminderForm from "@/components/reminders/ReminderForm";
 import { useParams } from "react-router";
 import { getReminderById } from "@/services/reminders";
 import useSWR from "swr";
-import { MarkerProps } from "@/components/Map";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 
 // Create a fetcher function for SWR

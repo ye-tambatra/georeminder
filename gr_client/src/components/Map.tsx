@@ -77,7 +77,7 @@ const Map: React.FC<MapProps> = ({
 };
 
 const Markers = (props: { markers: MarkerProps[]; onClick?: (coord: { lat: number; lng: number }) => void }) => {
-   const map = useMapEvents({
+   useMapEvents({
       click: (e) => {
          if (props.onClick) {
             props.onClick({

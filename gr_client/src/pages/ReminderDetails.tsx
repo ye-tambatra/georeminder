@@ -18,7 +18,6 @@ const ReminderDetails = () => {
 
    useEffect(() => {
       if (reminder) {
-         console.log("Setting center to:", [reminder.locationLat, reminder.locationLng]);
          setCenter([reminder.locationLat, reminder.locationLng]);
          setMarkers([
             {
