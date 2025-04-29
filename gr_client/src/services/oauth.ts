@@ -1,4 +1,5 @@
 import axios from "@/lib/axios";
+import { User } from "@/types/user";
 
 const GITHUB_CLIENT_ID = import.meta.env.VITE_GITHUB_CLIENT_ID;
 const GOOGLE_CLIENT_ID = import.meta.env.VITE_GOOGLE_CLIENT_ID;
@@ -33,9 +34,14 @@ export const redirectToGithubOAuth = () => {
    window.location.href = buildOAuthUrl(baseUrl, params);
 };
 
+export interface LoginResponse {
+   access: string;
+   user: User;
+}
+
 export const githubLogin = async (code: string) => {
    const url = "/api/auth/login/github/";
-   const response = await axios.post(url, {
+   const response = await axios.post<LoginResponse>(url, {
       code,
    });
    return response.data;
@@ -43,7 +49,7 @@ export const githubLogin = async (code: string) => {
 
 export const googleLogin = async (code: string) => {
    const url = "/api/auth/login/google/";
-   const response = await axios.post(url, {
+   const response = await axios.post<LoginResponse>(url, {
       code,
    });
    return response.data;

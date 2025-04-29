@@ -1,32 +1,29 @@
 import axios from "@/lib/axios";
 
-interface UserResponse {
-   id: number;
-   email: string;
-   firstName: string;
-   lastName: string;
-}
-
-interface RefreshTokenResponse {
-   access_token: string;
-   user: UserResponse;
-}
-
 export const logout = async () => {
-   await axios.post("social/logout/");
+   await axios.post("api/auth/logout/");
 };
 
-export const refreshToken = async (): Promise<{ accessToken: string; user: UserResponse }> => {
-   const { data } = await axios.post<RefreshTokenResponse>("social/token/refresh/");
-   const { access_token, user } = data;
+export const refreshAccessToken = async (): Promise<string> => {
+   const response = await axios.post<{ access: string }>("api/auth/token/refresh/");
+   return response.data.access;
+};
+
+export const getMe = async () => {
+   const response = await axios.get<{
+      id: number;
+      username: string;
+      first_name: string;
+      last_name: string;
+      email: string;
+   }>("api/auth/me");
+   const { id, username, first_name: firstName, last_name: lastName, email } = response.data;
 
    return {
-      accessToken: access_token,
-      user: {
-         id: user.id,
-         email: user.email,
-         firstName: user.firstName,
-         lastName: user.lastName,
-      },
+      id,
+      username,
+      firstName,
+      lastName,
+      email,
    };
 };

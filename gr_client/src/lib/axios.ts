@@ -9,6 +9,7 @@ const api = axios.create({
 api.interceptors.request.use((config) => {
    const authStore = useAuthStore.getState();
    const accessToken = authStore.accessToken;
+
    if (accessToken) {
       config.headers.Authorization = `Bearer ${accessToken}`;
    }
@@ -38,12 +39,7 @@ api.interceptors.response.use(
                refreshTokenPromise = useAuthStore
                   .getState()
                   .refreshAccessToken()
-                  .then((accessToken) => {
-                     if (!accessToken) {
-                        return Promise.reject(error);
-                     }
-                     return accessToken;
-                  })
+                  .then((accessToken) => accessToken)
                   .finally(() => {
                      refreshTokenPromise = null;
                   });
@@ -55,7 +51,7 @@ api.interceptors.response.use(
             return api(originalRequest);
          } catch (refreshError) {
             const authStore = useAuthStore.getState();
-            authStore.logout();
+            authStore.clientSideLogout();
             return Promise.reject(refreshError);
          }
       }

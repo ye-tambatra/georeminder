@@ -1,65 +1,86 @@
 import { create } from "zustand";
-import { logout, refreshToken } from "@/services/auth";
+import * as authService from "@/services/auth";
+import * as oauthService from "@/services/oauth";
 
 export const AuthProviders = {
    GOOGLE: "google",
    GITHUB: "github",
 } as const;
 
-const PROVIDER_URLS = {
-   [AuthProviders.GOOGLE]: `${import.meta.env.VITE_API_URL}/social/login/google-oauth2/`,
-   [AuthProviders.GITHUB]: `${import.meta.env.VITE_API_URL}/social/login/github/`,
-};
-
 export type AuthProvider = (typeof AuthProviders)[keyof typeof AuthProviders];
 
 export interface User {
    id: number;
    email: string;
+   username: string;
    firstName: string;
    lastName: string;
 }
 
 interface AuthState {
+   accessToken: string | null;
    user: User | null;
    isAuthenticated: boolean;
-   login: (provider: AuthProvider) => void;
-   logout: () => Promise<void>;
-   accessToken: string | null;
-   setToken: (token: string) => void;
-   refreshToken: () => Promise<string | null>;
-   updateState: (data: { user?: User | null; isAuthenticated?: boolean; accessToken?: string }) => void;
+   logIn: (provider: AuthProvider) => void;
+   logOut: () => Promise<void>;
+   clientSideLogout: () => void;
+   refreshAccessToken: () => Promise<string | null>;
+
+   updateState: (data: { accessToken?: string; user?: User; isAuthenticated?: boolean }) => void;
 }
 
 const useAuthStore = create<AuthState>((set) => ({
-   user: null,
    accessToken: null,
+   user: null,
    isAuthenticated: false,
-   login: (provider: AuthProvider) => {
-      window.location.href = PROVIDER_URLS[provider];
-   },
-   logout: async () => {
-      try {
-         await logout();
-      } finally {
-         set({ user: null, isAuthenticated: false });
+
+   logIn(provider) {
+      if (provider === AuthProviders.GOOGLE) {
+         oauthService.redirectToGithubOAuth();
+      } else if (provider === AuthProviders.GITHUB) {
+         oauthService.redirectToGithubOAuth();
       }
    },
-   setToken: (token: string) => set({ accessToken: token }),
-   refreshToken: async () => {
+
+   async logOut() {
       try {
-         const { accessToken, user } = await refreshToken();
+         await authService.logout();
+      } finally {
+         set({
+            user: null,
+            accessToken: null,
+            isAuthenticated: false,
+         });
+      }
+   },
+
+   clientSideLogout() {
+      set({
+         user: null,
+         accessToken: null,
+         isAuthenticated: false,
+      });
+   },
+
+   async refreshAccessToken() {
+      try {
+         const accessToken = await authService.refreshAccessToken();
          set({
             accessToken,
+         });
+         const user = await authService.getMe();
+         set({
+            user: {
+               ...user,
+            },
             isAuthenticated: true,
-            user: { ...user },
          });
          return accessToken;
       } catch {
-         set({ user: null, isAuthenticated: false });
          return null;
       }
    },
+
    updateState(data) {
       set({
          ...data,

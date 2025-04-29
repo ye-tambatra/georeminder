@@ -7,13 +7,13 @@ import { toast } from "sonner";
 
 const Header = () => {
    const [loading, setLoading] = useState(false);
-   const logout = useAuthStore((s) => s.logout);
+   const logOut = useAuthStore((s) => s.logOut);
    const naviate = useNavigate();
 
    const handleLogoutClick = async () => {
       setLoading(true);
       try {
-         await logout();
+         await logOut();
          toast.success("Successfully logged out!");
          naviate("/");
       } catch {
@@ -45,7 +45,7 @@ const Header = () => {
                   ) : (
                      <>
                         <LogOutIcon />
-                        Logout
+                        <span className="hidden md:inline">Logout</span>
                      </>
                   )}
                </Button>

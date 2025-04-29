@@ -1,4 +1,5 @@
 import { githubLogin, googleLogin } from "@/services/oauth";
+import useAuthStore from "@/stores/auth";
 import { useEffect } from "react";
 import { useSearchParams } from "react-router";
 
@@ -6,31 +7,45 @@ const OAuthCallback = () => {
    const [searchParams] = useSearchParams();
    const state = searchParams.get("state");
    const code = searchParams.get("code");
+   const updateAuthState = useAuthStore((s) => s.updateState);
 
    useEffect(() => {
-      const requestTokens = async () => {
+      const requestToken = async () => {
          if (!code || !state) {
             return;
          }
 
+         let data;
          if (state === "github") {
-            const data = await githubLogin(code);
-            console.log({
-               data,
-            });
+            data = await githubLogin(code);
+         } else if (state === "google") {
+            data = await googleLogin(code);
+         }
+
+         if (!data) {
             return;
          }
 
-         if (state === "google") {
-            const data = await googleLogin(code);
-            console.log({
-               data,
-            });
-            return;
-         }
+         const {
+            access,
+            user: { pk: id, username, email, first_name: firstName, last_name: lastName },
+         } = data;
+
+         updateAuthState({
+            accessToken: access,
+            isAuthenticated: true,
+            user: {
+               id,
+               username,
+               email,
+               firstName,
+               lastName,
+            },
+         });
+         return;
       };
 
-      requestTokens();
+      requestToken();
    }, [searchParams]);
 
    return <div>Authenticating...</div>;

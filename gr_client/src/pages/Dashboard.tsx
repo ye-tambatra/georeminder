@@ -40,12 +40,8 @@ const mockReminders: any[] = [
 
 const DashboardPage = () => {
    const [reminders, setReminders] = useState<any[]>([]);
-   const [isLoading, setIsLoading] = useState(true);
+   const [isLoading, setIsLoading] = useState(false);
    const user = useAuthStore((s) => s.user);
-
-   console.log({
-      user,
-   });
 
    if (isLoading) {
       return (
@@ -60,12 +56,14 @@ const DashboardPage = () => {
    }
 
    return (
-      <div className="container px-4 lg:mx-auto max-w-4xl py-10">
+      <div className="container px-4 md:mx-auto max-w-4xl py-10">
          <div className="space-y-6 py-4">
             {/* Header with greeting */}
             <header className="flex flex-col md:flex-row  items-center justify-between">
                <div className="text-center md:text-left">
-                  <h1 className="text-2xl font-bold tracking-tight">Hello, {user?.name || user?.email || "there"}</h1>
+                  <h1 className="text-2xl font-bold tracking-tight">
+                     Hello, {`${user?.firstName || ""} ${user?.lastName || ""}`.trim() || user?.email || "there"}
+                  </h1>
                   <p className="text-muted-foreground">Welcome to your GeoReminder dashboard</p>
                </div>
                <Link to={"/reminders/create"}>

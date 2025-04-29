@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import useAuthStore from "./stores/auth";
+import useAuthStore from "@/stores/auth";
 
 type Props = {
    children: React.ReactNode;
@@ -7,12 +7,15 @@ type Props = {
 
 const AppInitializer = ({ children }: Props) => {
    const [isReady, setIsReady] = useState(false);
-   const refreshToken = useAuthStore((s) => s.refreshToken);
+   const refreshAccessToken = useAuthStore((s) => s.refreshAccessToken);
 
    useEffect(() => {
       async function initializeApp() {
-         await refreshToken();
-         setIsReady(true);
+         try {
+            await refreshAccessToken();
+         } finally {
+            setIsReady(true);
+         }
       }
       initializeApp();
    }, []);
