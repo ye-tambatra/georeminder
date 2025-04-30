@@ -6,7 +6,10 @@ class ReminderSerializer(serializers.ModelSerializer):
     class Meta:
         model = Reminder
         fields = ['id', 'title', 'description', 'trigger_type', 'location_lat', 'location_lng', 'location_name']
-        extra_kwargs = {'location_name': {'read_only': True}}
+        extra_kwargs = {
+            'location_name': {'read_only': True},
+            'description': {'required': False}  
+        }
 
     def create(self, validated_data):
         location_name = validated_data.pop('location_name', None)
