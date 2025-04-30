@@ -1,4 +1,4 @@
-import Map from "@/components/Map";
+import Map, { MarkerProps } from "@/components/Map";
 import EmptyReminders from "@/components/reminders/EmptyReminders";
 import ReminderItem from "@/components/reminders/ReminderItem";
 import { Button } from "@/components/ui/button";
@@ -15,6 +15,11 @@ const DashboardPage = () => {
    const user = useAuthStore((s) => s.user);
    const { data: reminders, isLoading } = useSWR("api/users/reminders", getReminders);
    const [visibleCount, setVisibleCount] = useState(REMINDERS_PER_LOAD);
+   const markers: MarkerProps[] =
+      reminders?.map((reminder) => ({
+         position: [reminder.locationLat, reminder.locationLng],
+         popupText: reminder.title,
+      })) ?? [];
 
    const handleShowMore = () => {
       setVisibleCount((prev) => prev + REMINDERS_PER_LOAD);
@@ -86,8 +91,8 @@ const DashboardPage = () => {
 
             {/* Map section */}
             <section>
-               <h2 className="mb-4 text-xl font-semibold tracking-tight">Your Locations</h2>
-               <Map zoom={17} className="h-[400px]" />
+               <h2 className="mb-4 text-xl font-semibold tracking-tight">All locations from your reminders</h2>
+               <Map zoom={13} className="h-[400px]" markers={markers} />
             </section>
          </div>
       </div>
