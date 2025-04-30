@@ -9,13 +9,15 @@ import { Link } from "react-router";
 import useSWR from "swr";
 import { useState } from "react";
 
+const REMINDERS_PER_LOAD = 6;
+
 const DashboardPage = () => {
    const user = useAuthStore((s) => s.user);
    const { data: reminders, isLoading } = useSWR("api/users/reminders", getReminders);
-   const [visibleCount, setVisibleCount] = useState(4);
+   const [visibleCount, setVisibleCount] = useState(REMINDERS_PER_LOAD);
 
    const handleShowMore = () => {
-      setVisibleCount((prev) => prev + 4);
+      setVisibleCount((prev) => prev + REMINDERS_PER_LOAD);
    };
 
    if (isLoading || !reminders) {
@@ -60,9 +62,11 @@ const DashboardPage = () => {
                   <EmptyReminders />
                ) : (
                   <div className="space-y-4">
-                     <div className="grid gap-4 sm:grid-cols-2">
+                     <div className="columns-1 md:columns-2 lg:columns-3 gap-4">
                         {visibleReminders.map((reminder) => (
-                           <ReminderItem key={reminder.id} reminder={reminder} />
+                           <div key={reminder.id} className="break-inside-avoid mb-4">
+                              <ReminderItem reminder={reminder} />
+                           </div>
                         ))}
                      </div>
                      {hasMoreReminders && (
