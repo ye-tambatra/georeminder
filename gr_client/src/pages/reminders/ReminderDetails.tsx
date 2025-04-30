@@ -1,5 +1,5 @@
 import Map, { MarkerProps } from "@/components/Map";
-import DeleteReminderDialog from "@/components/modals/DeleteReminderDialog";
+import DeleteReminderDialog from "@/components/reminders/DeleteReminderDialog";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { deleteReminder, getReminderById } from "@/services/reminders";
