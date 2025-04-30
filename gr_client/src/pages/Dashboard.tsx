@@ -25,7 +25,7 @@ const DashboardPage = () => {
    }
 
    return (
-      <div className="container px-4 md:mx-auto py-10">
+      <div className="container px-4 sm:mx-auto py-10">
          <div className="space-y-6 py-4">
             <header className="flex flex-col md:flex-row items-center justify-between">
                <div className="text-center md:text-left">
