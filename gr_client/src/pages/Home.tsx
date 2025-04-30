@@ -9,6 +9,7 @@ import { ModeToggle } from "@/components/ModeToggle";
 const HomePage = () => {
    return (
       <div className="flex min-h-screen items-center justify-center bg-background p-4 relative">
+         <div className="absolute inset-0 z-4 w-full h-full backdrop-blur-[1px]"> </div>
          <div className="absolute inset-0 z-2 w-full h-full">
             <Map zoom={13} className="w-full h-full" />
          </div>
