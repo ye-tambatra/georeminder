@@ -4,6 +4,7 @@ import { Github, MapPin } from "lucide-react";
 import Google from "@/components/icons/Google";
 import Map from "@/components/Map";
 import { redirectToGithubOAuth, redirectToGoogleOAuth } from "@/services/oauth";
+import { ModeToggle } from "@/components/ModeToggle";
 
 const HomePage = () => {
    return (
@@ -14,7 +15,10 @@ const HomePage = () => {
          <div className="w-full max-w-xl z-5">
             <Card className="w-full border-none sm:p-8 py-10 px-7">
                <div className="flex flex-col items-center space-y-8 text-center">
-                  <div className="space-y-2">
+                  <div className="space-y-2 w-full">
+                     <div className="w-full flex items-center justify-end mb-7">
+                        <ModeToggle />
+                     </div>
                      <div className="flex items-center justify-center">
                         <MapPin className="mr-2 h-6 w-6 text-primary" />
                         <h1 className="text-4xl font-bold tracking-tight sm:text-4xl">GeoReminder</h1>

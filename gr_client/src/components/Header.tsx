@@ -4,6 +4,7 @@ import { Link, useNavigate } from "react-router";
 import { useState } from "react";
 import useAuthStore from "@/stores/auth";
 import { toast } from "sonner";
+import { ModeToggle } from "./ModeToggle";
 
 const Header = () => {
    const [loading, setLoading] = useState(false);
@@ -30,7 +31,8 @@ const Header = () => {
                <MapPin className="mr-2 h-6 w-6 text-primary" />
                GeoReminder
             </Link>
-            <div className="flex items-center gap-4">
+            <div className="flex items-center gap-4 space-x-5">
+               <ModeToggle />
                <Button
                   variant="outline"
                   className="cursor-pointer"
