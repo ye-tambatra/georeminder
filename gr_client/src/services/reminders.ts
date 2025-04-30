@@ -13,6 +13,7 @@ export interface Reminder {
    triggerType: TriggerType;
    locationLat: number;
    locationLng: number;
+   locationName?: string;
 }
 
 export const createReminder = async (reminder: Reminder): Promise<Reminder> => {
@@ -20,12 +21,12 @@ export const createReminder = async (reminder: Reminder): Promise<Reminder> => {
    return snakeToCamel(response.data);
 };
 
-export const getReminders = async (): Promise<Reminder[]> => {
-   const response = await api.get<Reminder[]>("api/users/reminders/");
+export const getReminders = async (): Promise<Required<Reminder>[]> => {
+   const response = await api.get<Required<Reminder>[]>("api/users/reminders/");
    return response.data.map(snakeToCamel);
 };
 
-export const getReminderById = async (id: number): Promise<Reminder> => {
+export const getReminderById = async (id: number): Promise<Required<Reminder>> => {
    const response = await api.get<Reminder>(`api/users/reminders/${id}/`);
    return snakeToCamel(response.data);
 };

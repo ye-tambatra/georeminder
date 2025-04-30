@@ -22,3 +22,11 @@ export const camelToSnake = (obj: any) => {
    }
    return newObj;
 };
+
+export const truncateString = (str: string, maxLength: number) => {
+   if (!str) return "";
+   if (str.length <= maxLength) {
+      return str;
+   }
+   return str.length > maxLength ? str.substring(0, maxLength) + "..." : str;
+};

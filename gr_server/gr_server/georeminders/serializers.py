@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from .models import Reminder
+from .services import get_location_name
 
 class ReminderSerializer(serializers.ModelSerializer):
     
@@ -12,7 +13,6 @@ class ReminderSerializer(serializers.ModelSerializer):
         }
 
     def create(self, validated_data):
-        location_name = validated_data.pop('location_name', None)
         location_lat = validated_data.get('location_lat')
         location_lng = validated_data.get('location_lng')
 
@@ -22,7 +22,6 @@ class ReminderSerializer(serializers.ModelSerializer):
             validated_data['user'] = request.user  # Set the user to the authenticated user
 
         reminder = Reminder(**validated_data)
-        # TODO: handle location name
-        reminder.location_name = "Default Location Name"  
+        reminder.location_name = get_location_name(location_lat, location_lng)
         reminder.save()
         return reminder
