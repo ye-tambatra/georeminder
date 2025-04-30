@@ -1,16 +1,23 @@
 import { githubLogin, googleLogin } from "@/services/oauth";
 import useAuthStore from "@/stores/auth";
 import { useEffect } from "react";
-import { useSearchParams } from "react-router";
+import { useNavigate, useSearchParams } from "react-router";
 
 const OAuthCallback = () => {
    const [searchParams] = useSearchParams();
    const state = searchParams.get("state");
    const code = searchParams.get("code");
+   const error = searchParams.get("error");
+   const navigate = useNavigate();
    const updateAuthState = useAuthStore((s) => s.updateState);
 
    useEffect(() => {
       const requestToken = async () => {
+         if (error) {
+            navigate("/");
+            return;
+         }
+
          if (!code || !state) {
             return;
          }

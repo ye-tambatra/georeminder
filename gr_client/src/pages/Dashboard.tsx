@@ -7,10 +7,16 @@ import useAuthStore from "@/stores/auth";
 import { Plus } from "lucide-react";
 import { Link } from "react-router";
 import useSWR from "swr";
+import { useState } from "react";
 
 const DashboardPage = () => {
    const user = useAuthStore((s) => s.user);
    const { data: reminders, isLoading } = useSWR("api/users/reminders", getReminders);
+   const [visibleCount, setVisibleCount] = useState(4);
+
+   const handleShowMore = () => {
+      setVisibleCount((prev) => prev + 4);
+   };
 
    if (isLoading || !reminders) {
       return (
@@ -23,6 +29,9 @@ const DashboardPage = () => {
          </div>
       );
    }
+
+   const visibleReminders = reminders.slice(0, visibleCount);
+   const hasMoreReminders = visibleCount < reminders.length;
 
    return (
       <div className="container px-4 md:mx-auto max-w-4xl py-10">
@@ -50,10 +59,23 @@ const DashboardPage = () => {
                {reminders.length === 0 ? (
                   <EmptyReminders />
                ) : (
-                  <div className="grid gap-4 sm:grid-cols-2">
-                     {reminders.map((reminder) => (
-                        <ReminderItem key={reminder.id} reminder={reminder} />
-                     ))}
+                  <div className="space-y-4">
+                     <div className="grid gap-4 sm:grid-cols-2">
+                        {visibleReminders.map((reminder) => (
+                           <ReminderItem key={reminder.id} reminder={reminder} />
+                        ))}
+                     </div>
+                     {hasMoreReminders && (
+                        <div className="flex justify-center mt-6">
+                           <Button
+                              variant="secondary"
+                              type="button"
+                              className="cursor-pointer"
+                              onClick={handleShowMore}>
+                              Show More
+                           </Button>
+                        </div>
+                     )}
                   </div>
                )}
             </section>

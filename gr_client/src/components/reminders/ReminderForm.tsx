@@ -85,7 +85,9 @@ const ReminderForm = ({
             <FormField
                render={({ field }) => (
                   <FormItem>
-                     <FormLabel>Description</FormLabel>
+                     <FormLabel>
+                        Description <span className="text-muted-foreground">(optional)</span>
+                     </FormLabel>
                      <FormControl>
                         <Input placeholder="Optional description" {...field} />
                      </FormControl>
