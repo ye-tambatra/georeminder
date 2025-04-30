@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import { useEffect, forwardRef } from "react";
 import {
    MapContainer,
    TileLayer,
@@ -41,40 +41,38 @@ const BOUNDS = L.latLngBounds(
 );
 const MIN_ZOOM = 14;
 
-const Map: React.FC<MapProps> = ({
-   center = DEFAULT_CENTER,
-   zoom = DEFAULT_ZOOM,
-   markers = [],
-   circles = [],
-   className,
-   onClick,
-}) => {
-   return (
-      <div className={cn("relative w-full h-full z-5", className)}>
-         <MapContainer
-            center={center}
-            zoom={zoom}
-            maxBounds={BOUNDS}
-            maxBoundsViscosity={1.0}
-            minZoom={MIN_ZOOM}
-            className="w-full h-full">
-            <TileLayer
-               url="https://{s}.google.com/vt/lyrs=y&x={x}&y={y}&z={z}"
-               maxZoom={20}
-               subdomains={["mt1", "mt2", "mt3"]}
-               attribution="Google"
-            />
-            <UpdateMapView center={center} zoom={zoom} />
-            <Markers markers={markers} onClick={onClick} />
-            {circles.map((circle, index) => (
-               <Circle key={index} center={circle.center} radius={circle.radius}>
-                  {circle.popupText && <Popup>{circle.popupText}</Popup>}
-               </Circle>
-            ))}
-         </MapContainer>
-      </div>
-   );
-};
+const Map = forwardRef<L.Map, MapProps>(
+   ({ center = DEFAULT_CENTER, zoom = DEFAULT_ZOOM, markers = [], circles = [], className, onClick }, ref) => {
+      return (
+         <div className={cn("relative w-full h-full z-5", className)}>
+            <MapContainer
+               center={center}
+               zoom={zoom}
+               maxBounds={BOUNDS}
+               maxBoundsViscosity={1.0}
+               minZoom={MIN_ZOOM}
+               className="w-full h-full"
+               ref={ref}>
+               <TileLayer
+                  url="https://{s}.google.com/vt/lyrs=y&x={x}&y={y}&z={z}"
+                  maxZoom={20}
+                  subdomains={["mt1", "mt2", "mt3"]}
+                  attribution="Google"
+               />
+               <UpdateMapView center={center} zoom={zoom} />
+               <Markers markers={markers} onClick={onClick} />
+               {circles.map((circle, index) => (
+                  <Circle key={index} center={circle.center} radius={circle.radius}>
+                     {circle.popupText && <Popup>{circle.popupText}</Popup>}
+                  </Circle>
+               ))}
+            </MapContainer>
+         </div>
+      );
+   }
+);
+
+Map.displayName = "Map";
 
 const Markers = (props: { markers: MarkerProps[]; onClick?: (coord: { lat: number; lng: number }) => void }) => {
    useMapEvents({
