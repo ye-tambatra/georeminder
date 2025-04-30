@@ -48,7 +48,12 @@ const ReminderDetails = () => {
                <CardTitle>
                   <h1 className="text-2xl">{reminder.title}</h1>
                </CardTitle>
-               <CardDescription>{reminder.description}</CardDescription>
+               <CardDescription>
+                  <p>{reminder.description}</p>
+                  <p className="mt-3">
+                     <span className="font-semibold">Location:</span> {reminder.locationName}
+                  </p>
+               </CardDescription>
             </CardHeader>
             <CardContent className="h-[300px]">
                <Map markers={markers} center={center} zoom={18} />
