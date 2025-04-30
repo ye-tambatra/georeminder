@@ -2,9 +2,16 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router";
 
+const COLORS = ["#FFE8A4", "#D0E89D", "#94E6C2", "#92DCE5", "#A3B18A"];
+
 const ReminderItem = ({ reminder }: { reminder: any }) => {
+   const randomColor = COLORS[Math.floor(Math.random() * COLORS.length)];
+
    return (
-      <Card key={reminder.id}>
+      <Card
+         className="rounded-sm p-5"
+         key={reminder.id}
+         style={{ backgroundColor: randomColor, boxShadow: "0 2px 4px rgba(0,0,0,0.1)" }}>
          <CardContent className="p-4 space-y-2">
             <div className="flex items-center justify-between">
                <h3 className="text-lg font-semibold text-foreground">{reminder.title}</h3>

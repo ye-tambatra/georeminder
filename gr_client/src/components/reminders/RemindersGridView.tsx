@@ -21,7 +21,7 @@ const RemindersGridView = ({ reminders }: { reminders: Reminder[] }) => {
             <EmptyReminders />
          ) : (
             <div className="space-y-4">
-               <div className="columns-1 md:columns-2 lg:columns-3 gap-4">
+               <div className="columns-1 md:columns-2 lg:columns-4 gap-4">
                   {visibleReminders.map((reminder) => (
                      <div key={reminder.id} className="break-inside-avoid mb-4">
                         <ReminderItem reminder={reminder} />

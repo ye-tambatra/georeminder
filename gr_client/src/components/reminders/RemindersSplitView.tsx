@@ -16,7 +16,7 @@ const RemindersSplitView = ({ reminders }: { reminders: Reminder[] }) => {
          {/* Map on the left - taking up 3/5 of the space on medium screens and up */}
          <div className="md:col-span-3 h-[500px]">
             <Map
-               zoom={selectedLocation ? 16 : 13} // Zoom higher when a location is selected
+               zoom={selectedLocation ? 17 : 13} // Zoom higher when a location is selected
                center={selectedLocation || undefined}
                className="h-full w-full"
                markers={reminders.map((reminder) => ({
