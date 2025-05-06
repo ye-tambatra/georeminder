@@ -1,6 +1,6 @@
 import { Link } from "react-router";
 import { Button } from "@/components/ui/button";
-import { Reminder } from "@/services/reminders";
+import { Reminder } from "@/types/reminder";
 import { truncateString } from "@/lib/utils";
 import { formatRelativeTime, areDatesEqual } from "@/lib/date";
 

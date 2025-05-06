@@ -1,7 +1,7 @@
 import EmptyReminders from "@/components/reminders/EmptyReminders";
 import ReminderItem from "@/components/reminders/ReminderItem";
 import { Button } from "@/components/ui/button";
-import { Reminder } from "@/services/reminders";
+import { Reminder } from "@/types/reminder";
 import { useState } from "react";
 
 const REMINDERS_PER_LOAD = 6;

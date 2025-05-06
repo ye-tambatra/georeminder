@@ -1,6 +1,7 @@
 import { create } from "zustand";
 import * as authService from "@/services/auth";
 import * as oauthService from "@/services/oauth";
+import { User } from "@/types/user";
 
 export const AuthProviders = {
    GOOGLE: "google",
@@ -8,14 +9,6 @@ export const AuthProviders = {
 } as const;
 
 export type AuthProvider = (typeof AuthProviders)[keyof typeof AuthProviders];
-
-export interface User {
-   id: number;
-   email: string;
-   username: string;
-   firstName: string;
-   lastName: string;
-}
 
 interface AuthState {
    accessToken: string | null;

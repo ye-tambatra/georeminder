@@ -1,6 +1,6 @@
 import Map from "@/components/Map";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Reminder } from "@/services/reminders";
+import { Reminder } from "@/types/reminder";
 import EmptyReminders from "./EmptyReminders";
 import { useState } from "react";
 import ReminderListItem from "./ReminderListItem";

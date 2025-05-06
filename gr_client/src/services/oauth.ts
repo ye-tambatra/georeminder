@@ -1,5 +1,4 @@
 import axios from "@/lib/axios";
-import { User } from "@/types/user";
 
 const GITHUB_CLIENT_ID = import.meta.env.VITE_GITHUB_CLIENT_ID;
 const GOOGLE_CLIENT_ID = import.meta.env.VITE_GOOGLE_CLIENT_ID;
@@ -36,7 +35,7 @@ export const redirectToGithubOAuth = () => {
 
 export interface LoginResponse {
    access: string;
-   user: User;
+   user: { pk: number; email: string; first_name: string; last_name: string; username: string };
 }
 
 export const githubLogin = async (code: string) => {
