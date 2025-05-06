@@ -43,7 +43,7 @@ const DashboardPage = () => {
             </header>
 
             <Tabs defaultValue="split" className="w-full">
-               <TabsList>
+               <TabsList className="mb-5">
                   <TabsTrigger value="split">Split View</TabsTrigger>
                   <TabsTrigger value="grid">Grid View</TabsTrigger>
                </TabsList>

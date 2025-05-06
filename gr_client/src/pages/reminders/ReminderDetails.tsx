@@ -3,7 +3,7 @@ import DeleteReminderDialog from "@/components/reminders/DeleteReminderDialog";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { deleteReminder, getReminderById } from "@/services/reminders";
-import { formatDateTime, formatRelativeTime } from "@/lib/date";
+import { formatDateTime, formatRelativeTime, areDatesEqual } from "@/lib/date";
 import { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router";
 import useSWR from "swr";
@@ -60,7 +60,7 @@ const ReminderDetails = () => {
                         ({formatRelativeTime(reminder.createdAt ?? "")})
                      </span>
                   </p>
-                  {reminder.updatedAt && (
+                  {reminder.updatedAt && !areDatesEqual(reminder.updatedAt, reminder.createdAt as string) && (
                      <p className="mt-1">
                         <span className="font-semibold">Updated:</span> {formatDateTime(reminder.updatedAt)}
                         <span className="text-sm text-muted-foreground ml-2">

@@ -2,7 +2,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router";
 import { useTheme } from "@/providers/ThemeProvider";
-import { formatRelativeTime } from "@/lib/date";
+import { areDatesEqual, formatRelativeTime } from "@/lib/date";
 import { Reminder } from "@/services/reminders";
 
 const LIGHT_COLORS = ["#FFE8A4", "#D0E89D", "#94E6C2", "#92DCE5", "#A3B18A"];
@@ -39,7 +39,7 @@ const ReminderItem = ({ reminder }: { reminder: Reminder }) => {
             )}
 
             <p className={`text-sm ${mutedTextColorClass}`}>Created {formatRelativeTime(reminder.createdAt ?? "")}</p>
-            {reminder.updatedAt && (
+            {reminder.updatedAt && !areDatesEqual(reminder.updatedAt, reminder.createdAt as string) && (
                <p className={`text-sm ${mutedTextColorClass}`}>Updated {formatRelativeTime(reminder.updatedAt)}</p>
             )}
 
