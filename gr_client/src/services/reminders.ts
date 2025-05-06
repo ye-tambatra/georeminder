@@ -16,8 +16,8 @@ export interface Reminder {
    locationName?: string;
 }
 
-export const createReminder = async (reminder: Reminder): Promise<Reminder> => {
-   const response = await api.post<Reminder>("api/users/reminders/", camelToSnake(reminder));
+export const createReminder = async (reminder: Reminder): Promise<Required<Reminder>> => {
+   const response = await api.post<Required<Reminder>>("api/users/reminders/", camelToSnake(reminder));
    return snakeToCamel(response.data);
 };
 
@@ -31,8 +31,8 @@ export const getReminderById = async (id: number): Promise<Required<Reminder>> =
    return snakeToCamel(response.data);
 };
 
-export const updateReminder = async (id: number, reminder: Partial<Reminder>): Promise<Reminder> => {
-   const response = await api.put<Reminder>(`api/users/reminders/${id}/`, camelToSnake(reminder));
+export const updateReminder = async (id: number, reminder: Partial<Reminder>): Promise<Required<Reminder>> => {
+   const response = await api.put<Required<Reminder>>(`api/users/reminders/${id}/`, camelToSnake(reminder));
    return snakeToCamel(response.data);
 };
 
