@@ -9,7 +9,7 @@ import {
    AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
-import { Loader2 } from "lucide-react";
+import { Spinner } from "@/components/ui/spinner";
 
 interface DeleteReminderDialogProps {
    isOpen: boolean;
@@ -52,7 +52,7 @@ const DeleteReminderDialog = ({ isOpen, onOpenChange, onConfirm, reminderTitle }
                   disabled={isDeleting}>
                   {isDeleting ? (
                      <>
-                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                        <Spinner />
                         Deleting...
                      </>
                   ) : (

@@ -6,9 +6,9 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import Map from "../Map";
-import { Loader } from "lucide-react";
 import { useCallback, useState } from "react";
 import { MarkerProps } from "@/components/Map";
+import { Spinner } from "@/components/ui/spinner";
 
 const formSchema = z.object({
    title: z.string().min(2, {
@@ -150,7 +150,7 @@ const ReminderForm = ({
             <Button type="submit" disabled={submitButtonLoading} className="cursor-pointer">
                {submitButtonLoading ? (
                   <>
-                     <Loader />
+                     <Spinner />
                      Saving...
                   </>
                ) : (

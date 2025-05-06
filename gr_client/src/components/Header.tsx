@@ -1,10 +1,11 @@
-import { Loader, LogOutIcon, MapPin } from "lucide-react";
+import { LogOutIcon, MapPin } from "lucide-react";
 import { Button } from "./ui/button";
 import { Link, useNavigate } from "react-router";
 import { useState } from "react";
 import useAuthStore from "@/stores/auth";
 import { toast } from "sonner";
-import { ModeToggle } from "./ModeToggle";
+import { ModeToggle } from "@/components/ModeToggle";
+import { Spinner } from "@/components/ui/spinner";
 
 const Header = () => {
    const [loading, setLoading] = useState(false);
@@ -41,7 +42,7 @@ const Header = () => {
                   disabled={loading}>
                   {loading ? (
                      <>
-                        <Loader />
+                        <Spinner />
                         Logging out...
                      </>
                   ) : (
