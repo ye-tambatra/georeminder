@@ -6,10 +6,12 @@ class ReminderSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = Reminder
-        fields = ['id', 'title', 'description', 'trigger_type', 'location_lat', 'location_lng', 'location_name']
+        fields = ['id', 'title', 'description', 'trigger_type', 'location_lat', 'location_lng', 'location_name', 'created_at', 'updated_at']
         extra_kwargs = {
             'location_name': {'read_only': True},
-            'description': {'required': False}  
+            'description': {'required': False},
+            'created_at': {'read_only': True},  
+            'updated_at': {'read_only': True},  
         }
 
     def create(self, validated_data):

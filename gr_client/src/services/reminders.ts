@@ -14,6 +14,8 @@ export interface Reminder {
    locationLat: number;
    locationLng: number;
    locationName?: string;
+   createdAt?: string;
+   updatedAt?: string;
 }
 
 export const createReminder = async (reminder: Reminder): Promise<Required<Reminder>> => {

@@ -3,6 +3,7 @@ import DeleteReminderDialog from "@/components/reminders/DeleteReminderDialog";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { deleteReminder, getReminderById } from "@/services/reminders";
+import { formatDateTime, formatRelativeTime } from "@/lib/date";
 import { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router";
 import useSWR from "swr";
@@ -53,6 +54,20 @@ const ReminderDetails = () => {
                   <p className="mt-3">
                      <span className="font-semibold">Location:</span> {reminder.locationName}
                   </p>
+                  <p className="mt-3">
+                     <span className="font-semibold">Created:</span> {formatDateTime(reminder.createdAt ?? "")}
+                     <span className="text-sm text-muted-foreground ml-2">
+                        ({formatRelativeTime(reminder.createdAt ?? "")})
+                     </span>
+                  </p>
+                  {reminder.updatedAt && (
+                     <p className="mt-1">
+                        <span className="font-semibold">Updated:</span> {formatDateTime(reminder.updatedAt)}
+                        <span className="text-sm text-muted-foreground ml-2">
+                           ({formatRelativeTime(reminder.updatedAt)})
+                        </span>
+                     </p>
+                  )}
                </CardDescription>
             </CardHeader>
             <CardContent className="h-[300px]">

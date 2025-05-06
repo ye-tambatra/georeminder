@@ -2,11 +2,13 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router";
 import { useTheme } from "@/providers/ThemeProvider";
+import { formatRelativeTime } from "@/lib/date";
+import { Reminder } from "@/services/reminders";
 
 const LIGHT_COLORS = ["#FFE8A4", "#D0E89D", "#94E6C2", "#92DCE5", "#A3B18A"];
 const DARK_COLORS = ["#3B3B3B", "#4F4F4F", "#616161", "#757575", "#8D8D8D"];
 
-const ReminderItem = ({ reminder }: { reminder: any }) => {
+const ReminderItem = ({ reminder }: { reminder: Reminder }) => {
    const { theme } = useTheme();
    const isDarkMode = theme === "dark";
 
@@ -34,6 +36,11 @@ const ReminderItem = ({ reminder }: { reminder: any }) => {
                <p className={`text-sm ${mutedTextColorClass}`}>
                   Location: <span className={`font-medium ${textColorClass}`}>{reminder.locationName}</span>
                </p>
+            )}
+
+            <p className={`text-sm ${mutedTextColorClass}`}>Created {formatRelativeTime(reminder.createdAt ?? "")}</p>
+            {reminder.updatedAt && (
+               <p className={`text-sm ${mutedTextColorClass}`}>Updated {formatRelativeTime(reminder.updatedAt)}</p>
             )}
 
             <div className="pt-2">

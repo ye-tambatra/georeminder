@@ -13,3 +13,5 @@ class Reminder(models.Model):
     location_lng = models.FloatField()
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='reminders')
     location_name = models.CharField(max_length=255, blank=True, null=True)
+    created_at = models.DateTimeField(auto_now_add=True, blank=True, null=True) #  blank=True, null=True for existing data
+    updated_at = models.DateTimeField(auto_now=True, blank=True, null=True) #  blank=True, null=True for existing data
