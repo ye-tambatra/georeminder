@@ -10,14 +10,14 @@ import { Spinner } from "@/components/ui/spinner";
 const Header = () => {
    const [loading, setLoading] = useState(false);
    const logOut = useAuthStore((s) => s.logOut);
-   const naviate = useNavigate();
+   const navigate = useNavigate();
 
    const handleLogoutClick = async () => {
       setLoading(true);
       try {
          await logOut();
          toast.success("Successfully logged out!");
-         naviate("/");
+         navigate("/");
       } catch {
          toast.error("Error logging out. Please try again.");
       } finally {
